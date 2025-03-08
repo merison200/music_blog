@@ -27,4 +27,4 @@ USER appuser
 EXPOSE 8080
 
 # Run the application with the built JAR
-CMD ["java", "-jar", "target/*.jar"]
+CMD ["java", "-jar", "target/emma_media-0.0.1-SNAPSHOT.jar"]
