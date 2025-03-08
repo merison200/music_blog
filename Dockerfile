@@ -4,18 +4,17 @@ FROM openjdk:17-jdk-alpine
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the Maven wrapper and pom.xml first to cache dependencies
-COPY mvnw pom.xml ./
-COPY .mvn .mvn
+# Copy the pom.xml file first to cache dependencies
+COPY pom.xml . 
 
-# Download dependencies to cache them in Docker layers
-RUN ./mvnw dependency:go-offline
+# Download dependencies
+RUN apk add --no-cache maven && mvn dependency:go-offline
 
 # Copy the rest of the project
-COPY . .
+COPY src ./src
 
 # Build the application
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 # Create a non-root user for security
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
